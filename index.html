@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+Keyboard shortcuts
+https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts
+
+Ctrl+s -> save file.
+-->
+<html lang="ja">
+<head>
+<title>Draft browser memo</title>
+<meta name="description" content="Draft browser memo is a lightweight text editor on the browser.Text is not save." />
+<style type="text/css" media="screen">
+#editor { 
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+</style>
+</head>
+<body>
+<div id="editor"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.37.2/ace.js"></script>
+<script>
+function downloadText(txt) {
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href =  URL.createObjectURL(blob);
+  a.download = 'note.txt';
+  a.click();
+}
+
+function init() {
+  var e = ace.edit("editor");
+  
+  e.setShowPrintMargin(false);
+  e.setOptions({
+    fontSize: "10.5pt"
+  });
+  
+  e.commands.addCommand({
+    name: 'save',
+    bindKey: {win: "Ctrl-S", "mac": "Cmd-S"},
+    exec: function(editor) {
+      downloadText(editor.session.getValue());
+    }
+  });
+  
+  e.focus();
+}
+
+init();
+</script>
+</body>
+</html>
